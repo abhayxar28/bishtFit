@@ -9,8 +9,13 @@ export async function middleware(request: NextRequest) {
   });
 
   // If no token or not an admin, redirect to signin
-  if (!token || token.role !== "admin") {
+  if (!token) {
     return NextResponse.redirect(new URL("/signin", request.url));
+  }
+
+  // For Google users, we'll set them as admin by default
+  if (!token.role) {
+    token.role = "admin";
   }
 
   return NextResponse.next();
