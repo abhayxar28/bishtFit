@@ -27,6 +27,15 @@ export const authOptions: AuthOptions = {
           access_type: "offline",
           response_type: "code"
         }
+      },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          role: "admin"
+        }
       }
     }),
     CredentialsProvider({
@@ -69,7 +78,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       if (user) {
-        token.role = user.role || "admin"; // Set default role for Google users
+        token.role = user.role || "admin";
       }
       return token;
     },
@@ -89,6 +98,6 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: "/signin",
-    error: "/signin", // Redirect to signin page on error
+    error: "/signin",
   },
 }; 

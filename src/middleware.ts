@@ -15,11 +15,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  // For Google users, we'll set them as admin by default
-  if (!token.role) {
-    token.role = "admin";
-  }
-
   return NextResponse.next();
 }
 
