@@ -32,7 +32,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+    <div className="h-[500px] flex items-center justify-center bg-black px-4">
       <div className="max-w-md w-full bg-[#1a1a1a] rounded-2xl shadow-xl p-8 border border-white/10">
         <h2 className="text-2xl font-bold text-white mb-6 text-center">Sign In</h2>
 

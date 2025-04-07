@@ -3,8 +3,13 @@
 import { useState } from "react";
 import Logo from "@/Icons/Logo";
 import Link from "next/link";
+import { Session } from "next-auth";
 
-export default function Navbar() {
+interface NavbarProps {
+  session: Session | null;
+}
+
+export default function Navbar({ session }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleBookSessionClick = () => {
@@ -41,11 +46,16 @@ export default function Navbar() {
           <a className="hover:border-b cursor-pointer" onClick={handleBookSessionClick}>Contact</a>
         </div>
 
-        {/* Desktop CTA button */}
-        <div>
+        {/* Desktop CTA buttons */}
+        <div className="hidden md:flex gap-4 items-center">
           <Link href='/contact'>
-          <button className="cursor-pointer hidden md:block py-2 px-3.5 rounded-lg bg-[#cef522] text-[#292e0f] font-semibold">Book a session</button>
+            <button className="cursor-pointer py-2 px-3.5 rounded-lg bg-[#cef522] text-[#292e0f] font-semibold">Book a session</button>
           </Link>
+          {session?.user?.role === "admin" && (
+            <Link href='/dashboard'>
+              <button className="cursor-pointer py-2 px-3.5 rounded-lg bg-[#cef522] text-[#292e0f] font-semibold">Dashboard</button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -63,6 +73,15 @@ export default function Navbar() {
               Book a session
             </button>
           </Link>
+          {session?.user?.role === "admin" && (
+            <Link href='/dashboard'>
+              <button
+                className="w-max py-2 px-3.5 rounded-lg bg-[#cef522] text-[#292e0f] font-semibold cursor-pointer"
+              >
+                Dashboard
+              </button>
+            </Link>
+          )}
         </div>
       )}
     </div>

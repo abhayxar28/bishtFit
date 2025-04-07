@@ -9,6 +9,7 @@ export default function Contact() {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ export default function Contact() {
     }
 
     setError('');
+    setIsLoading(true);
 
     try {
       const res = await fetch('/api/user', {
@@ -42,6 +44,8 @@ export default function Contact() {
       }
     } catch (error) {
       setError('An error occurred while submitting the form.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,7 +57,7 @@ export default function Contact() {
           <h2 className="text-5xl font-extrabold mb-6">Get in touch.</h2>
           <p className="text-lg">
             I want to help you overcome all mental and physical hurdles in your
-            everyday life. At 37, I’ve seen how life’s challenges can wear us down — mentally and physically. But I’ve also learned that it’s never too late to take control of your health, rebuild your strength, and become the best version of yourself. I’m here to help you do exactly that — no matter where you’re starting from.
+            everyday life. At 37, I've seen how life's challenges can wear us down — mentally and physically. But I've also learned that it's never too late to take control of your health, rebuild your strength, and become the best version of yourself. I'm here to help you do exactly that — no matter where you're starting from.
           </p>
         </div>
 
@@ -139,9 +143,17 @@ export default function Contact() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-black text-white px-6 py-2 mt-2 rounded-lg font-semibold hover:bg-gray-900 transition cursor-pointer"
+            disabled={isLoading}
+            className="bg-black text-white px-6 py-2 mt-2 rounded-lg font-semibold hover:bg-gray-900 transition cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Send
+            {isLoading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Sending...</span>
+              </>
+            ) : (
+              'Send'
+            )}
           </button>
         </form>
       </div>

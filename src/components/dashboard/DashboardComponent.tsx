@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Check, Archive, ArrowLeft } from "lucide-react";
+import { Check, Archive } from "lucide-react";
 
 type Tab = "user" | "archive" | "session";
 type SessionFilter = "all" | "completed" | "pending";
@@ -18,7 +17,6 @@ interface User {
 }
 
 export default function DashboardComponent() {
-  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>("user");
@@ -97,18 +95,9 @@ export default function DashboardComponent() {
   const filteredUsers = getFilteredUsers();
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 sm:px-6 md:px-10 py-14">
-      {/* Back Button */}
-      <button
-        onClick={() => router.push("/")}
-        className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 cursor-pointervc"
-      >
-        <ArrowLeft size={20} />
-        <span>Back to Home</span>
-      </button>
-
+    <div className="min-h-screen bg-black text-white px-4 sm:px-6 md:px-10 py-4">
       {/* Tabs */}
-      <div className="flex flex-wrap justify-center space-x-6 sm:space-x-10 md:space-x-20 border-b border-white/20 pb-4 mb-8">
+      <div className="flex flex-wrap justify-center space-x-6 sm:space-x-10 md:space-x-20 border-b border-white/20 pb-2 mb-4">
         {(["User", "Archive"] as const).map((tab) => {
           const tabKey = tab.toLowerCase() as Tab;
           return (
@@ -152,11 +141,11 @@ export default function DashboardComponent() {
 
       {/* Loading or Empty State */}
       {loading ? (
-        <div className="text-center text-white">Loading users...</div>
+        <div className="text-center text-white mt-10">Loading users...</div>
       ) : filteredUsers.length === 0 ? (
         <div className="text-center text-white">No users found.</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-10 mt-8">
           {filteredUsers.map((user) => (
             <div
               key={user.id}
