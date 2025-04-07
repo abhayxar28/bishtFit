@@ -24,9 +24,11 @@ export default function Landing() {
           </div>
 
           <div>
-            <button className="border-[#cef522] text-[#cef522] font-semibold border rounded-lg py-3 px-6 sm:py-4 sm:px-8 hover:bg-[#cef522] hover:text-black transition duration-200">
-              Get Started
-            </button>
+            <Link href='/contact'>
+              <button className="border-[#cef522] text-[#cef522] font-semibold border rounded-lg py-3 px-6 sm:py-4 sm:px-8 hover:bg-[#cef522] hover:text-black transition duration-200 cursor-pointer">
+                Get Started
+              </button>
+            </Link>
           </div>
         </div>
 

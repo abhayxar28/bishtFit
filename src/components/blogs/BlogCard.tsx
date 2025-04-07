@@ -59,12 +59,12 @@ export default function BlogCard({ limit }: { limit?: number }) {
   const blogsToShow = limit ? cards.slice(0, limit) : cards;
 
   return (
-    <div className="bg-black text-white h-[600px] px-6 pt-12">
-      <div className='text-center text-lime-400 text-5xl font-bold font-mono mb-8'>
+    <div className="bg-black text-white px-6 pt-12 pb-16">
+      <div className="text-center text-lime-400 text-4xl md:text-5xl font-bold font-mono mb-8">
         <h1>Fitness Blogs</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {blogsToShow.map((card) => (
           <div
             key={card.id}
@@ -95,3 +95,4 @@ export default function BlogCard({ limit }: { limit?: number }) {
     </div>
   );
 }
+

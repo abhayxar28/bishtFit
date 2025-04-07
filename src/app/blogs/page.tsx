@@ -11,7 +11,7 @@ export default function Blogs(){
             <div>
                 <BlogCard />
             </div>
-            <div className='mt-90'>
+            <div className='mt-10'>
                 <section id="book-session-section">
                     <Contact />
                 </section>
