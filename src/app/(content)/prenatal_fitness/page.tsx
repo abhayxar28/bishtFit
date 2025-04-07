@@ -1,10 +1,10 @@
-import Navbar from "@/components/navbar/Navbar";
+import NavbarWrapper from "@/components/navbar/NavbarWrapper";
 import Link from "next/link";
 
 export default function PrenatalFitness() {
   return (
     <div className="flex flex-col">
-      <Navbar />
+      <NavbarWrapper />
 
       <div className="text-center text-6xl font-extrabold font-mono text-[#cef522]">
         Prenatal Fitness

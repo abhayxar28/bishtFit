@@ -1,11 +1,11 @@
-import Navbar from "@/components/navbar/Navbar";
+import NavbarWrapper from "@/components/navbar/NavbarWrapper";
 import Link from "next/link";
 
 export default function PersonalTraining() {
   return (
     <div className="flex flex-col">
       <div>
-        <Navbar />
+        <NavbarWrapper />
       </div>
 
       <div className="text-center text-6xl font-extrabold font-mono text-[#cef522]">
@@ -27,11 +27,11 @@ export default function PersonalTraining() {
           </h2>
           <p className="mt-4 text-lg">
             Unlock your full potential with personalized personal training. With
-            tailored workouts and professional guidance, you’ll achieve faster
+            tailored workouts and professional guidance, you'll achieve faster
             results, build confidence, and stay motivated.
           </p>
           <p className="mt-4 text-lg">
-            It’s perfect for anyone looking to improve fitness, strength, or
+            It's perfect for anyone looking to improve fitness, strength, or
             overall health efficiently and effectively. This journey is all
             about you—your goals, your pace, and your success!
           </p>

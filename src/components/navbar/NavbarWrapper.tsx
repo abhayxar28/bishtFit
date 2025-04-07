@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth.config";
 import Navbar from "./Navbar";
 
 export default async function NavbarWrapper() {
