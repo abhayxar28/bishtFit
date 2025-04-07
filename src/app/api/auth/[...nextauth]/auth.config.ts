@@ -27,6 +27,7 @@ export const authOptions: AuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          role: "admin"
         }
       }
     }),
@@ -63,7 +64,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  debug: true, // Enable debug logs
+  debug: true,
   session: {
     strategy: "jwt",
   },
@@ -76,7 +77,7 @@ export const authOptions: AuthOptions = {
             where: { email: user.email! },
           });
 
-          // If user doesn't exist, create them
+          // If user doesn't exist, create them as admin
           if (!existingUser) {
             await prisma.admin.create({
               data: {
@@ -105,7 +106,6 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Always redirect to dashboard after sign in
       return baseUrl + "/dashboard";
     },
   },
