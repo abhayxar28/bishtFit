@@ -21,20 +21,12 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      },
       profile(profile) {
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: "admin"
         }
       }
     }),
@@ -71,7 +63,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  debug: process.env.NODE_ENV === "development",
+  debug: true, // Enable debug logs
   session: {
     strategy: "jwt",
   },
@@ -102,21 +94,18 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, user, account }) {
       if (user) {
-        token.role = "admin"; // All users are admins
+        token.role = "admin";
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = "admin"; // All users are admins
+        session.user.role = "admin";
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
+      // Always redirect to dashboard after sign in
       return baseUrl + "/dashboard";
     },
   },
