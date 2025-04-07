@@ -76,15 +76,39 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        try {
+          // Check if user exists
+          const existingUser = await prisma.admin.findUnique({
+            where: { email: user.email! },
+          });
+
+          // If user doesn't exist, create them
+          if (!existingUser) {
+            await prisma.admin.create({
+              data: {
+                email: user.email!,
+                password: Math.random().toString(36).slice(-8), // Generate a random password
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error in signIn callback:", error);
+          return false;
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, account }) {
       if (user) {
-        token.role = user.role || "admin";
+        token.role = "admin"; // All users are admins
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role as string;
+        session.user.role = "admin"; // All users are admins
       }
       return session;
     },
