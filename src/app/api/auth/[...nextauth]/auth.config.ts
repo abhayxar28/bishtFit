@@ -22,6 +22,7 @@ export const authOptions: AuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       profile(profile) {
+        console.log("Google profile:", profile);
         return {
           id: profile.sub,
           name: profile.name,
@@ -70,6 +71,10 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log("SignIn callback - User:", user);
+      console.log("SignIn callback - Account:", account);
+      console.log("SignIn callback - Profile:", profile);
+
       if (account?.provider === "google") {
         try {
           // Check if user exists
@@ -77,14 +82,17 @@ export const authOptions: AuthOptions = {
             where: { email: user.email! },
           });
 
+          console.log("Existing user:", existingUser);
+
           // If user doesn't exist, create them as admin
           if (!existingUser) {
-            await prisma.admin.create({
+            const newUser = await prisma.admin.create({
               data: {
                 email: user.email!,
                 password: Math.random().toString(36).slice(-8), // Generate a random password
               },
             });
+            console.log("Created new user:", newUser);
           }
         } catch (error) {
           console.error("Error in signIn callback:", error);
@@ -94,18 +102,27 @@ export const authOptions: AuthOptions = {
       return true;
     },
     async jwt({ token, user, account }) {
+      console.log("JWT callback - Token:", token);
+      console.log("JWT callback - User:", user);
+      console.log("JWT callback - Account:", account);
+
       if (user) {
         token.role = "admin";
       }
       return token;
     },
     async session({ session, token }) {
+      console.log("Session callback - Session:", session);
+      console.log("Session callback - Token:", token);
+
       if (session.user) {
         session.user.role = "admin";
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
+      console.log("Redirect callback - URL:", url);
+      console.log("Redirect callback - BaseURL:", baseUrl);
       return baseUrl + "/dashboard";
     },
   },
