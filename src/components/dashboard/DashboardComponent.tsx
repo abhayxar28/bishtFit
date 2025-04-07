@@ -29,10 +29,18 @@ export default function DashboardComponent() {
       try {
         const res = await fetch("/api/user");
         const data = await res.json();
-        setUsers(data.map((user: User) => ({
-          ...user,
-          archived: user.archived ?? false,
-        })));
+
+        // Ensure the response is an array
+        if (Array.isArray(data)) {
+          setUsers(
+            data.map((user: User) => ({
+              ...user,
+              archived: user.archived ?? false,
+            }))
+          );
+        } else {
+          console.error("Expected array but got:", data);
+        }
       } catch (error) {
         console.error("User fetch error:", error);
       } finally {
@@ -44,24 +52,24 @@ export default function DashboardComponent() {
   }, []);
 
   const toggleSessionDone = (userId: string) => {
-    setUsers(prev =>
-      prev.map(user =>
+    setUsers((prev) =>
+      prev.map((user) =>
         user.id === userId ? { ...user, sessionDone: !user.sessionDone } : user
       )
     );
   };
 
   const archiveUser = (userId: string) => {
-    setUsers(prev =>
-      prev.map(user =>
+    setUsers((prev) =>
+      prev.map((user) =>
         user.id === userId ? { ...user, archived: true } : user
       )
     );
   };
 
   const unarchiveUser = (userId: string) => {
-    setUsers(prev =>
-      prev.map(user =>
+    setUsers((prev) =>
+      prev.map((user) =>
         user.id === userId ? { ...user, archived: false } : user
       )
     );
@@ -89,25 +97,25 @@ export default function DashboardComponent() {
   const filteredUsers = getFilteredUsers();
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 md:px-10 py-14">
+    <div className="min-h-screen bg-black text-white px-4 sm:px-6 md:px-10 py-14">
       {/* Back Button */}
       <button
         onClick={() => router.push("/")}
-        className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 cursor-pointer"
+        className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 cursor-pointervc"
       >
         <ArrowLeft size={20} />
         <span>Back to Home</span>
       </button>
 
       {/* Tabs */}
-      <div className="flex justify-center space-x-16 md:space-x-20 relative border-b border-white/20 pb-4 mb-8">
+      <div className="flex flex-wrap justify-center space-x-6 sm:space-x-10 md:space-x-20 border-b border-white/20 pb-4 mb-8">
         {(["User", "Archive"] as const).map((tab) => {
           const tabKey = tab.toLowerCase() as Tab;
           return (
             <button
               key={tab}
               onClick={() => setActiveTab(tabKey)}
-              className={`relative text-lg font-semibold transition-colors ${
+              className={`relative text-base sm:text-lg font-semibold transition-colors ${
                 activeTab === tabKey ? "text-white" : "text-white/50"
               }`}
             >
@@ -122,7 +130,7 @@ export default function DashboardComponent() {
 
       {/* Session Filters */}
       {activeTab === "session" && (
-        <div className="flex justify-center gap-4 md:gap-6 mb-10">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-10">
           {(["All", "Completed", "Pending"] as const).map((filter) => {
             const filterKey = filter.toLowerCase() as SessionFilter;
             return (
@@ -148,11 +156,11 @@ export default function DashboardComponent() {
       ) : filteredUsers.length === 0 ? (
         <div className="text-center text-white">No users found.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-10">
           {filteredUsers.map((user) => (
             <div
               key={user.id}
-              className={`relative w-72 rounded-2xl p-5 shadow-md border ${
+              className={`relative w-full rounded-2xl p-5 shadow-md border ${
                 user.sessionDone ? "border-green-500" : "border-red-400"
               } bg-[#1a1a1a]`}
             >
@@ -182,26 +190,26 @@ export default function DashboardComponent() {
               </div>
 
               {/* User Info */}
-              <div className="mt-10 space-y-3">
+              <div className="mt-10 space-y-3 text-sm sm:text-base">
                 <div>
-                  <p className="text-sm text-white/60 font-medium">Name</p>
-                  <p className="text-base text-white font-semibold">{user.name}</p>
+                  <p className="text-white/60 font-medium">Name</p>
+                  <p className="font-semibold text-white">{user.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-white/60 font-medium">Email</p>
-                  <p className="text-base text-white">{user.email}</p>
+                  <p className="text-white/60 font-medium">Email</p>
+                  <p className="text-white">{user.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-white/60 font-medium">Phone</p>
-                  <p className="text-base text-white">{user.phoneNumber}</p>
+                  <p className="text-white/60 font-medium">Phone</p>
+                  <p className="text-white">{user.phoneNumber}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-white/60 font-medium">Message</p>
-                  <p className="text-base text-white">{user.message}</p>
+                  <p className="text-white/60 font-medium">Message</p>
+                  <p className="text-white break-words">{user.message}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-white/60 font-medium">Session</p>
-                  <p className="text-base text-white">
+                  <p className="text-white/60 font-medium">Session</p>
+                  <p className="text-white">
                     {user.sessionDone ? "✅ Completed" : "❌ Pending"}
                   </p>
                 </div>
