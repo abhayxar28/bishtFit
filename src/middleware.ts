@@ -8,9 +8,11 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET
   });
 
-  // If no token or not an admin, redirect to signin
+  // If no token, redirect to signin with callback URL
   if (!token) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    const signInUrl = new URL("/signin", request.url);
+    signInUrl.searchParams.set("callbackUrl", request.url);
+    return NextResponse.redirect(signInUrl);
   }
 
   // For Google users, we'll set them as admin by default

@@ -21,6 +21,13 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     }),
     CredentialsProvider({
       name: "credentials",
@@ -55,6 +62,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
